@@ -1,0 +1,20 @@
+{
+  "user": {
+    "_id": 1,
+    "username": "Admin",
+    "password": "abcd1234",
+    "role": "admin"
+  },
+  "contents": {
+    "content-1" : {
+      "title": "First Content",
+      "content": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores recusandae perferendis odit magnam vitae iusto, porro molestiae iure error culpa esse id molestias autem doloribus illo veritatis possimus quis natus!",
+      "date":"2023-07-19"
+    },
+    "content-2" : {
+      "title": "Second Content",
+      "content": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maiores recusandae perferendis odit magnam vitae iusto, porro molestiae iure error culpa esse id molestias autem doloribus illo veritatis possimus quis natus!",
+      "date":"2023-07-19"
+    }
+  }
+}
