@@ -157,14 +157,14 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <section className="flex flex-1 ">
+    <>
       <div className="flex-col max-w-2xl w-full p-2">
         <div className="flex-none pt-5 pb-2 w-full">
           <h3>Product: {data ? data?.name : <span className="animate-pulse">Loading Product...</span>}</h3>
         </div>
         {content()}
       </div>
-    </section>
+    </>
   )
 }
 

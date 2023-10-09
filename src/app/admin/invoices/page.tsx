@@ -4,10 +4,12 @@
 import { useState, useEffect } from 'react'
 import { DataTable } from '@/components/my'
 import { invoiceColumns } from '@/components/utils'
-import Link from 'next/link'
+import { Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
   const  [invoices, setInvoices] = useState()
+  const router = useRouter()
 
   useEffect(()=>{
     async function getInvoices(){
@@ -23,22 +25,19 @@ const Page = () => {
   },[])
 
   return (
-    <section className="flex flex-1 flex-col">
-      <div className="flex-col max-w-2xl h-full w-full">
-        <div className="pt-5 pb-2 w-full pl-3">
-          <h3>Invoices</h3>
+    <>
+      <div className="pt-5 pb-2 flex w-full pl-3 gap-2">
+        <h3>Invoices</h3>
+        <div className="bg-black flex items-center rounded-full w-8 hover:cursor-pointer" onClick={()=>router.push('/admin/invoices/new')}>
+          <Plus className="text-white mx-auto" size={18} strokeWidth={3}/>
         </div>
-        {
-          invoices
-          ? (<DataTable data={invoices} columns={invoiceColumns} />)
-          : <div>Loading</div>
-        }
-        
       </div>
-      <div className="sticky bottom-0 flex justify-end p-2">
-          <Link href="/admin/invoices/new" className="shadcn_button_default">Add Invoice </Link>
-      </div>
-    </section>
+      {
+        invoices
+        ? (<DataTable data={invoices} columns={invoiceColumns} />)
+        : <div>Loading</div>
+      }
+    </>
   )
 }
 

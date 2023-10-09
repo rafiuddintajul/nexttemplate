@@ -1,13 +1,8 @@
 'use client'
 
-import type { Metadata } from 'next'
 import { AdminNav } from '@/sections'
 import { usePathname } from 'next/navigation'
 
-export const metadata: Metadata = {
-  title: 'Company | Admin',
-  description: 'Admin Page',
-}
 
 export default function AdminLayout({
   children,
@@ -17,9 +12,11 @@ export default function AdminLayout({
   const path = usePathname()
   const activePath = path.split('/')[2] ?? 'main'
   return (
-    <main className="flex flex-1 overflow-y-auto relative">
+    <main className="flex flex-1 relative h-full">
       <AdminNav currentPath={activePath}/>
-      {children}
+      <section className="sm:container flex flex-1 flex-col overflow-auto">
+        {children}
+      </section>
     </main>
   )
 }

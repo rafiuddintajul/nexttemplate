@@ -69,7 +69,7 @@ const Page = () => {
   }
 
   return (
-    <section className="flex flex-1 flex-col justify-center">
+    <>
       <div className="flex-col max-w-2xl w-full">
         <div className="pt-5 pb-2 w-full pl-3">
           <h3>Orders: Create New </h3>
@@ -78,7 +78,7 @@ const Page = () => {
           <Button type="button" onClick={()=>router.back()}>Back</Button>
         </OrderForm>
       </div>
-    </section>
+    </>
   )
 }
 

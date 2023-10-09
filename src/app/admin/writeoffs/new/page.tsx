@@ -67,16 +67,14 @@ const Page = () => {
   }
 
   return (
-    <section className="flex flex-1 flex-col justify-center">
-      <div className="flex-col max-w-2xl w-full">
-        <div className="pt-5 pb-2 w-full pl-3">
-          <h3>Write-Off: Create New </h3>
-        </div>
-        <WriteOffForm submitHandler={submitHandler} loading={loading}>
-          <Button type="button" onClick={()=>router.back()}>Back</Button>
-        </WriteOffForm>
+    <div className="flex-col max-w-2xl w-full">
+      <div className="pt-5 pb-2 w-full pl-3">
+        <h3>Write-Off: Create New </h3>
       </div>
-    </section>
+      <WriteOffForm submitHandler={submitHandler} loading={loading}>
+        <Button type="button" onClick={()=>router.back()}>Back</Button>
+      </WriteOffForm>
+    </div>
   )
 }
 

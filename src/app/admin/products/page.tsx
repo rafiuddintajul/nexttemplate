@@ -45,7 +45,7 @@ const Products = () => {
   }
 
   return (
-    <section className="flex flex-1 flex-col">
+    <>
       <div className="flex-col max-w-2xl h-full w-full">
         <div className="pt-5 pb-2 w-full pl-3 flex justify-between">
           <h3>Products</h3>
@@ -64,7 +64,7 @@ const Products = () => {
       <div className="sticky bottom-0 flex justify-end p-2">
         <Link href="/admin/products/new" className="shadcn_button_default">Add Product</Link>
       </div>
-    </section>
+    </>
   )
 }
 
