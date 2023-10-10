@@ -1,16 +1,18 @@
 
 'use client'
 
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { WriteOff } from '@/types'
 import { writeOffColumns } from '@/components/utils'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
 import { DataTable,SelectOptions } from '@/components/my'
 import { Input } from '@/components/ui'
+import { Plus } from 'lucide-react'
 
 const Page = () => {
   const [ writeOff, setWriteOff ] = useState<WriteOff[]>()
   const [ filter, setFilter ] = useState({ column:'', value: '' })
+  const router = useRouter()
   useEffect(()=> {
     async function getOrders(){
       try {
@@ -37,27 +39,29 @@ const Page = () => {
   }
   
   return (
-    <section className="flex flex-1 flex-col justify-center">
-      <div className="flex-col max-w-2xl w-full">
-        <div className="pt-5 pb-2 w-full pl-3">
+    <>
+      <div className="pt-5 pb-2 w-full px-3">
+        <div className="flex h-full gap-2">
           <h3>Write-Off</h3>
-        </div>
-        {writeOff
-          ? <div className="w-full flex-col overflow-hidden">
-            <DataTable columns={writeOffColumns} data={writeOff} filter={filter}>
-              <div className="flex items-center py-4 gap-1 w-full">
-                <SelectOptions className="flex-1" placeholder='column' options={colFilterOption.map(opt=>opt.disp)} onValueChange={selectHandler}/>
-                <Input placeholder="search key" value={filter.value} onChange={(e)=>setFilter({ ...filter, value:e.target.value })} />
-              </div>
-            </DataTable>
+          <div className="bg-black flex items-center rounded-full w-8 hover:cursor-pointer" onClick={()=>router.push('/admin/writeoffs/new')}>
+            <Plus className="text-white mx-auto" size={18} strokeWidth={3}/>
           </div>
-          : <div>Loading</div>
-        }
-        <div className="sticky bottom-0 flex justify-end p-2">
-          <Link href="/admin/writeoffs/new" className="shadcn_button_default">Add WriteOff</Link>
         </div>
       </div>
-    </section>
+      {writeOff
+        ? <div className="w-full flex-col overflow-hidden">
+          <DataTable columns={writeOffColumns} data={writeOff} filter={filter}>
+            <div className="flex items-center py-4 gap-1 w-full h-full">
+              <div className="h-10 flex gap-2 w-full">
+                <SelectOptions className="h-full w-22" placeholder='column' options={colFilterOption.map(opt=>opt.disp)} onValueChange={selectHandler}/>
+                <Input className="flex-1" placeholder="search key" value={filter.value} onChange={(e)=>setFilter({ ...filter, value:e.target.value })} />
+              </div>
+            </div>
+          </DataTable>
+        </div>
+        : <div>Loading</div>
+      }
+    </>
   )
 }
 

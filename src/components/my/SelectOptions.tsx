@@ -13,13 +13,14 @@ type SelectOptions = {
   defaultValue?: string,
   disabled?: boolean,
   onValueChange?: (value:string) => void,
+  value?: string,
   className?: string
 }
 
-export const SelectOptions = forwardRef(({ options, placeholder, onValueChange, defaultValue, disabled, className }:SelectOptions, ref:any) => {
+export const SelectOptions = forwardRef(({ options, placeholder, value, onValueChange, disabled, className }:SelectOptions, ref:any) => {
   
   return (
-    <Select defaultValue={defaultValue} onValueChange={onValueChange} >
+    <Select onValueChange={onValueChange} value={value ?? undefined} >
       <SelectTrigger className={className} disabled={disabled}>
         <SelectValue placeholder={placeholder} ref={ref}/>
       </SelectTrigger>

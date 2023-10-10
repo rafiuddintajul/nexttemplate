@@ -60,7 +60,7 @@ export const OrderForm = ({ submitHandler, children, orderData = emptyOrder, loa
     if (date) dispatch({ type: OrdAct.DATE, payload: { date } })
   }
 
-const descChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const descChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const desc = e.target.value
     dispatch({ type: OrdAct.DESC, payload: { desc } })
   }

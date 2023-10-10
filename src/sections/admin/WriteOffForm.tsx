@@ -1,9 +1,9 @@
 'use client'
 
-import { Button, Label, Input, Textarea } from "@/components/ui"
-import { InputAutoComplete, ItemListQuantityInput, DateInput } from "@/components/my"
+import { Button, Label, Textarea } from "@/components/ui"
+import { InputAutoComplete, ItemListQuantityInput, DateInput, type InputAutoCompOpt } from "@/components/my"
 import { Product, WriteOffFormFields } from "@/types"
-import { ReactNode, useReducer, useRef } from "react"
+import { ReactNode, useState, useReducer, useRef } from "react"
 import { useToast } from "@/components/ui"
 import useSWR from "swr"
 import { WriOfAct, writeOffReducer } from "@/utils"
@@ -25,6 +25,7 @@ const emptyWriteOff = { items: [], date: undefined, reason: '', total:0 } // def
 
 export const WriteOffForm = ({ submitHandler, children, writeOffData = emptyWriteOff, loading }: WriteOffFormProps) => {
   const [writeOffState, dispatch] = useReducer(writeOffReducer, writeOffData)
+  const [product, setProduct] = useState<InputAutoCompOpt<Product>|undefined>(undefined)
   const { items, date, reason, total } = writeOffState
   const { toast } = useToast()
   const autoCompleteInputRef = useRef<{ label: string, value: Product, clear?: () => void }>(null)
@@ -33,16 +34,14 @@ export const WriteOffForm = ({ submitHandler, children, writeOffData = emptyWrit
   const prodOptions = data ? data.map(prod => ({ label: prod.name, value: prod })) : []
 
   const addItemHandler = () => {
-    const input = autoCompleteInputRef.current
-    if (input?.value) {
-      if (items.find(item => item.product._id === input.value._id)) {
+    if (product) {
+      if (items.find(item => item.product._id === product.value._id)) {
         const warn = toast({
           description: 'Product already in the list'
         })
         return setTimeout(() => warn.dismiss(), 5000)
       }
-      dispatch({ type: WriOfAct.ADDITEM, payload: { item: { product: input.value } } })
-      input.clear?.()
+      dispatch({ type: WriOfAct.ADDITEM, payload: { item: { product: product.value } } })
     }
   }
 
@@ -69,6 +68,7 @@ export const WriteOffForm = ({ submitHandler, children, writeOffData = emptyWrit
     if (date) dispatch({ type: WriOfAct.DATE, payload: { date } })
   }
 
+  
   return (
     <form onSubmit={(e) => submitHandler(e, writeOffState, ()=>dispatch({ type:WriOfAct.CLEAR, payload:undefined }))} className="w-full px-4">
       
@@ -78,8 +78,8 @@ export const WriteOffForm = ({ submitHandler, children, writeOffData = emptyWrit
           {
             !isLoading
               ? (<>
-                <InputAutoComplete ref={autoCompleteInputRef} emptyMessage="No Product Found" options={prodOptions ? prodOptions : []} className="border rounded-md flex-1" placeholder="search product..." />
-                <Button variant={'secondary'} type='button' className="bg-blue-500 hover:bg-blue-500 text-white disable-active" onClick={addItemHandler}>Add</Button>
+                <InputAutoComplete emptyMessage="No Product Found" options={prodOptions ? prodOptions : []} className="border rounded-md flex-1" placeholder="search product..." onValueChange={setProduct} />
+                <Button type='button' className="disable-active" onClick={addItemHandler}>Add</Button>
               </>)
               : <div className="border rounded-md h-10 w-full bg-gray-200 animate-pulse flex justify-center">
                 <div className="my-auto text-sm">Preparing product list, please wait...</div>

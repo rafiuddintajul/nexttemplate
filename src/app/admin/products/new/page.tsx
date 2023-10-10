@@ -41,6 +41,7 @@ const Page = () => {
         // on failure
         const err = await res.json()
         const message = <div>Failed: Product failed to be created</div>
+        console.log(err)
         // display error toast
         toastObj = {
           title: `Error:${err.code}`,

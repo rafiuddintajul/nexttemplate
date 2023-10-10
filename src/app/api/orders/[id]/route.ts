@@ -88,7 +88,7 @@ export const PATCH = async (req:Request, { params }:{ params: { id:string }}) =>
 }
 
 export const DELETE = async (req:Request, { params }:any)=> {
-  const [id] = params.slug
+  const id = params.id
 
   try {
     await connectDB()

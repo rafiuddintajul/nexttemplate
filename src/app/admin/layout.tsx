@@ -15,7 +15,9 @@ export default function AdminLayout({
     <main className="flex flex-1 relative h-full">
       <AdminNav currentPath={activePath}/>
       <section className="sm:container flex flex-1 flex-col overflow-auto">
-        {children}
+        <div className="flex-col max-w-2xl h-full w-full md:mx-auto overflow-y-auto">
+          {children}
+        </div>
       </section>
     </main>
   )

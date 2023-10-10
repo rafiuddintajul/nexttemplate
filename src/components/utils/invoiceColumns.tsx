@@ -30,7 +30,8 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     accessorKey: 'no',
     cell: ({ row }) => {
       const no: string = row.getValue('no')
-      return <Link href={`/admin/invoices/${no}`} className="text-blue-600">{no}</Link>
+      const id: string | undefined = row.original._id
+      return <Link href={`/admin/invoices/${id}`} className="text-blue-600">{no}</Link>
     }
   },
   {

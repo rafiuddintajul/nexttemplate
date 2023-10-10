@@ -20,7 +20,7 @@ export const GET = async (request: any) => {
 }
 
 export const POST = async (req: Request) => {
-  const { name, images, price, desc, type, tags }:ProductsData = await req.json()
+  const { name, images, price, desc, type, tags, availability }:ProductsData = await req.json()
 
   try {
     await connectDB()
@@ -31,7 +31,7 @@ export const POST = async (req: Request) => {
     await productConf.save()
 
     // create product instance to get product._id to be recoreded in priceRecord first
-    const product = new Products({ name, images, desc, type, tags:tags })
+    const product = new Products({ name, images, desc, type, tags, availability })
     // create priceRecord for the product
     const priceRecord = await PriceRecords.create({ product: product._id, price })
     // setting price on the product from priceRecords data

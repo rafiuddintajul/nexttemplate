@@ -8,7 +8,7 @@ import PriceRecords from "@/models/pricesRecords";
 export const GET = async (req:Request, {params}:any) => {
   try {
     await connectDB()
-    const invoice = await Invoices.findOne({ no:params.id }).populate({
+    const invoice = await Invoices.findOne({ _id:params.id }).populate({
       path: 'items.product',
       model: Products,
       populate: {

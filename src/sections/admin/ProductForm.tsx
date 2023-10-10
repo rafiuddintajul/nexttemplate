@@ -102,13 +102,15 @@ export const ProductForm = ({ submitHandler, children, productData = emptyProd, 
           }
         </div>
       </div>
-      <div className="py-1">
-        <Label>Price:</Label>
-        <Input type="number" value={price} onChange={priceHandler} />
-      </div>
-      <div className="py-1">
-        <Label>Type:</Label>
-        <Input type="text" value={type} onChange={typeHandler} />
+      <div className="py-1 flex justify-between gap-2">
+        <div>
+          <Label>Price:</Label>
+          <Input type="number" value={price} onChange={priceHandler} />
+        </div>
+        <div>
+          <Label>Type:</Label>
+          <Input type="text" value={type} onChange={typeHandler} />
+        </div>
       </div>
       <div className="py-1">
         <Label>Tags:</Label>

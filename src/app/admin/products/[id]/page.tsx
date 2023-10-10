@@ -23,65 +23,62 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const submitHandler = async (e: React.FormEvent, product: Product) => {
     e.preventDefault()
-    // setLoading(true)
+    setLoading(true)
 
-    // const { name, address, date, items, status } = order
-    // let toastObj: Toast = { description: '' } //default toast input
-    // let emptyFields = []
+    const { name, images, type, tags } = product
+    let toastObj: Toast = { description: '' } //default toast input
+    let emptyFields = []
 
-    // // validate for empty fields
-    // if (name === '') emptyFields.push('Name')
-    // if (address === '') emptyFields.push('Address')
-    // if (status === '') emptyFields.push('Status')
-    // if (items.length === 0) emptyFields.push('Items\' quantity')
-    // if (!date) emptyFields.push('Date')
+    // validate for empty fields
+    if (name === '') emptyFields.push('Name')
+    if (images.length === 0) emptyFields.push('Image')
+    if (type === '') emptyFields.push('Type')
+    if (tags.length === 0) emptyFields.push('Tags')
 
+    if (emptyFields.length === 0) {
+      // submit order here
+      const res = await fetch(`${window.location.origin}/api/products/${params.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(product)
+      })
+      
+      if (res.ok) {
+        // on success
+        toastObj = { description: <div>Product <b>{params.id}</b> has been saved</div>, className: "bg-green-300" }
+        setEdit(false)
+        setLoading(false)
+        // reavalidate order
+        mutate(await res.json())
+      } else {
+        // on failure
+        console.log(res)
+        const err = await res.json()
+        console.log(err)
+        const message = err.code === <div>Failed: Product <b>{params.id}</b> failed to be saved</div>
+        // display error toast
+        toastObj = {
+          title: `Error:${err.code}`,
+          description: message,
+          variant: 'destructive',
+        }
+      }
+    } else {
+      //on empty field 
+      toastObj = {
+        description: (<div>
+          <p>Following field&#40;s&#41; is/are required:</p>
+          <div className="px-4">
+            <ul className="list-disc list-outside">
+              {emptyFields.map(field => <li className="font-semibold" key={field}>{field}</li>)}
+            </ul>
+          </div>
+        </div>),
+        className: "bg-amber-300"
+      }
+    }
 
-    // if (emptyFields.length === 0) {
-
-    //   // submit order here
-    //   const res = await fetch(`${window.location.origin}/api/orders/${params.id}`, {
-    //     method: 'PATCH',
-    //     body: JSON.stringify(order)
-    //   })
-
-    //   if (res.ok) {
-    //     // on success
-    //     toastObj = { description: <div>Order <b>{params.id}</b> has been saved</div>, className: "bg-green-300" }
-    //     setEdit(false)
-    //     setLoading(false)
-    //     // reavalidate order
-    //     mutate(await res.json())
-    //   } else {
-    //     // on failure
-    //     console.log(res)
-    //     const err = await res.json()
-    //     console.log(err)
-    //     const message = err.code === <div>Failed: Order <b>{params.id}</b> failed to be saved</div>
-    //     // display error toast
-    //     toastObj = {
-    //       title: `Error:${err.code}`,
-    //       description: message,
-    //       variant: 'destructive',
-    //     }
-    //   }
-    // } else {
-    //   //on empty field 
-    //   toastObj = {
-    //     description: (<div>
-    //       <p>Following field&#40;s&#41; is/are required:</p>
-    //       <div className="px-4">
-    //         <ul className="list-disc list-outside">
-    //           {emptyFields.map(field => <li className="font-semibold" key={field}>{field}</li>)}
-    //         </ul>
-    //       </div>
-    //     </div>),
-    //     className: "bg-amber-300"
-    //   }
-    // }
-
-    // const submissionToast = toast(toastObj)
-    // return setTimeout(() => submissionToast.dismiss(), 3000)
+    const submissionToast = toast(toastObj)
+    return setTimeout(() => submissionToast.dismiss(), 3000)
   }
 
   const deleteProduct = async () => {

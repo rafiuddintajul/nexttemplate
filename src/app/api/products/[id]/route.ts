@@ -21,7 +21,14 @@ export const GET = async (req:Request, {params}:any) => {
 export const PATCH = async(req:Request, {params}:any) => {
   const { name, images, price, desc, type, tags, availability } = await req.json()
   try {
-    const product = await Products.findOneAndUpdate({ _id:params.id }, { name, images, price, desc, type, tags, availability }, { new:true })
+    const priceRecord = await PriceRecords.findOne({ product:params.id }, {}, { sort:{createdAt:-1}, limit:1})
+    const newPrice = priceRecord.price !== price ? await PriceRecords.create({ product:params.id, price:price }):undefined
+
+    const newProdRecord:any = { name, images, desc, type, tags, availability } 
+    if (newPrice) newProdRecord.price = newPrice._id
+
+    const product = await Products.findOneAndUpdate({ _id:params.id }, newProdRecord, { new:true })
+    Products.findOneAndUpdate
     await product.populate({
       path: 'price',
       model: PriceRecords,

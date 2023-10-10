@@ -2,7 +2,6 @@ import type { Product } from "@/types"
 import { Label } from "@/components/ui"
 import { PicCarousel } from "@/components/my"
 
-
 type ProductViewProps = {
   data: Product,
   children: React.ReactNode,
@@ -10,7 +9,6 @@ type ProductViewProps = {
 
 export const ProductView = ({ data, children }: ProductViewProps) => {
   const { name, images, price, desc, type, tags, availability } = data
-  const green = availability ? 'text-green-500' : ''
   return (
     <div className="flex-1 flex-col">
       <div className="py-1 flex flex-col h-[450px]">
@@ -21,8 +19,7 @@ export const ProductView = ({ data, children }: ProductViewProps) => {
         </div>
       </div>
       <div className="flex justify-center">
-        <Label className="my-auto">Price</Label>
-          <div className="my-auto text-center text-sm">RM {price.toFixed(2)}</div>
+        <div className="my-auto text-center text-sm">RM {price.toFixed(2)}</div>
       </div>
       <div className="flex justify-between py-2">
         <div className="flex gap-2">

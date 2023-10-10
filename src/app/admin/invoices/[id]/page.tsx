@@ -36,32 +36,34 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     if (emptyFields.length === 0) {
       // submit invoice here
-      const res = await fetch(`${window.location.origin}/api/invoices/${params.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(invoice)
-      })
-
-      if (res.ok) {
-        // on success
-        toastObj = { description: <div>Invoice <b>{no}</b> has been saved</div>, className: "bg-green-300" }
-        setEdit(false)
-        setLoading(false)
-        // reavalidate invoice
-        mutate(await res.json())
-      } else {
-        // on failure
-        const err = await res.json()
-        console.log(err)
-        const message = err.code === 11000
-          ? <div>Duplicate Entries: <b>{(typeof Object.values(err.keyValue)[0] === 'string') && Object.values(err.keyValue)[0] as string}</b> already in databse</div>
-          : <div>Failed: Invoice <b>{no}</b> failed to be saved</div>
-        // display error toast
-        toastObj = {
-          title: `Error:${err.code}`,
-          description: message,
-          variant: 'destructive',
+      
+        const res = await fetch(`${window.location.origin}/api/invoices/${data!._id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(invoice)
+        })
+        
+        if (res.ok) {
+          // on success
+          toastObj = { description: <div>Invoice <b>{no}</b> has been saved</div>, className: "bg-green-300" }
+          setEdit(false)
+          setLoading(false)
+          // reavalidate invoice
+          mutate(await res.json())
+        } else {
+          // on failure
+          const err = await res.json()
+          console.log(err)
+          const message = err.code === 11000
+            ? <div>Duplicate Entries: <b>{(typeof Object.values(err.keyValue)[0] === 'string') && Object.values(err.keyValue)[0] as string}</b> already in databse</div>
+            : <div>Failed: Invoice <b>{no}</b> failed to be saved</div>
+          // display error toast
+          toastObj = {
+            title: `Error:${err.code}`,
+            description: message,
+            variant: 'destructive',
+          }
         }
-      }
+
     } else {
       //on empty field 
       toastObj = {
@@ -82,19 +84,21 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   const deleteInvoice = async () => {
-    const res = await fetch(`${window.location.origin}/api/invoices/${params.id}`,
-      { method: 'DELETE' }
-    )
-    let toastObj: Toast = { description: '' }
-    if (res.ok) {
-      toastObj = { description: <div>Invoice <b>{data?.no}</b> has been deleted</div>, className: "bg-green-300" }
-      router.push(`${window.location.origin}/admin/invoices`)
-    } else {
-      toastObj = { description: <div>Invoice <b>{data?.no}</b> failed to be deleted</div>, variant: 'destructive' }
-      setLoading(false)
+    if (data) {
+      const res = await fetch(`${window.location.origin}/api/invoices/${data._id}`,
+        { method: 'DELETE' }
+      )
+      let toastObj: Toast = { description: '' }
+      if (res.ok) {
+        toastObj = { description: <div>Invoice <b>{data?.no}</b> has been deleted</div>, className: "bg-green-300" }
+        router.push(`${window.location.origin}/admin/invoices`)
+      } else {
+        toastObj = { description: <div>Invoice <b>{data?.no}</b> failed to be deleted</div>, variant: 'destructive' }
+        setLoading(false)
+      }
+      const deletionToast = toast(toastObj)
+      setTimeout(() => deletionToast.dismiss(), 3000)
     }
-    const deletionToast = toast(toastObj)
-    setTimeout(() => deletionToast.dismiss(), 3000)
   }
 
   const attemptDelete = () => {
