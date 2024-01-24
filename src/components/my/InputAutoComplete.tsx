@@ -69,6 +69,7 @@ export const InputAutoComplete = <T,>({
         input.blur()
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isOpen, options, onValueChange]
   )
 
@@ -83,6 +84,7 @@ export const InputAutoComplete = <T,>({
         onValueChange?.({ label:input.value, value:input.value as T })
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected])
 
   const handleSelectOption = useCallback(

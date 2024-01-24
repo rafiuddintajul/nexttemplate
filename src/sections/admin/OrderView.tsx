@@ -8,7 +8,7 @@ type OrderViewProps = {
 }
 
 export const OrderView = ({ data, children }: OrderViewProps) => {
-  const { account, address, items, date, total, desc, status } = data
+  const { account, address, items, date, total, description, status } = data
   const dispAcc = account?.user?.name
   const green = status === 'new' ? 'text-green-500' : ''
   return (
@@ -38,14 +38,14 @@ export const OrderView = ({ data, children }: OrderViewProps) => {
             return <div key={`${item._id}`} className="relative flex justify-between p-1">
               <div className="w-2/4 flex gap-2 ">
                 <div className="peer flex-1 text-sm my-auto truncate">
-                  {item.product.name}
+                  {item.product.name ?? "undefined"}
                 </div>
                 <div className="absolute hidden peer-hover:block peer-active:block bottom-8 left-5 text-sm bg-black text-white rounded-md p-1 w-fit">
-                  {item.product.name}
+                  {item.product.name ?? "undefined"}
                 </div>
               </div>
               <div className="w-1/4 flex">
-                <div className="text-sm my-auto">RM{item.product.price.toFixed(2)}</div>
+                <div className="text-sm my-auto">RM{item.product.price?.toFixed(2) ?? "undefined"}</div>
               </div>
               <div className="w-12">
                 <div className="text-sm text-center p-1">{item.quantity}</div>
@@ -66,7 +66,7 @@ export const OrderView = ({ data, children }: OrderViewProps) => {
       </div>
       <div className="py-1">
         <Label>Desc</Label>
-        <div className="text-sm">{desc}</div>
+        <div className="text-sm">{description}</div>
       </div>
       {children}
     </div>

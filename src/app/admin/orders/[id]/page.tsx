@@ -108,7 +108,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       className: "flex-col gap-3",
       action: <div className="flex justify-center gap-2">
         <Button type="button" className="w-16" onClick={deleteOrder}>Yes</Button>
-        <Button type="button" className="w-16" onClick={() => {warningToast.dismiss();setLoading(false)}}>No</Button>
+        <Button type="button" className="w-16" onClick={() => { warningToast.dismiss(); setLoading(false) }}>No</Button>
       </div>
     })
   }
@@ -146,7 +146,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             </div>
           </OrderView>
         </div>)
-      } 
+      }
       return (<OrderForm submitHandler={submitHandler} orderData={data} loading={loading} >
         <div className="flex justify-center">
           <Button type="button" onClick={() => setEdit(false)}>Cancel</Button>
@@ -157,14 +157,12 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <>
-      <div className="flex-col max-w-2xl w-full">
-        <div className="pt-5 pb-2 w-full pl-3">
-          <h3>Order: {data ? data?.name : <span className="animate-pulse">Loading Order...</span>}</h3>
-        </div>
-        {content()}
+    <div className="flex-col max-w-2xl w-full">
+      <div className="pt-5 pb-2 w-full pl-3">
+        <h3>Order: {data ? data?.name : <span className="animate-pulse">Loading Order...</span>}</h3>
       </div>
-    </>
+      {content()}
+    </div>
   )
 }
 

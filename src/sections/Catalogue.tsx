@@ -1,7 +1,6 @@
 'use client'
 
 import { ProductCard } from "../components/cards"
-import { Carousel } from 'react-responsive-carousel'
 
 export const Catalogue = () => {
 
@@ -71,11 +70,11 @@ export const Catalogue = () => {
             <div className="w-60 h-1 mx-auto bg_theme" />
           </div>
         </div>
-        <Carousel showThumbs={false} showStatus={false} className="flex-1" renderArrowPrev={prevArrow} renderArrowNext={nextArrow} emulateTouch={true} autoFocus={false}>
+        {/* <Carousel showThumbs={false} showStatus={false} className="flex-1" renderArrowPrev={prevArrow} renderArrowNext={nextArrow} emulateTouch={true} autoFocus={false}>
           {carouselData.map(i => (
             <ProductCard key={i.name} data={i} />
           ))}
-        </Carousel>
+        </Carousel> */}
       </section>
     </div>
   )

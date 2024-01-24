@@ -69,16 +69,16 @@ const Page = () => {
   }
 
   return (
-    <>
-      <div className="flex-col max-w-2xl w-full">
+    <div className="flex container justify-center">
+      <div className="flex-col max-w-2xl h-full w-full">
         <div className="pt-5 pb-2 w-full pl-3">
-          <h3>Orders: Create New </h3>
+          <h3>Create New </h3>
         </div>
         <OrderForm submitHandler={submitHandler} loading={loading}>
           <Button type="button" onClick={()=>router.back()}>Back</Button>
         </OrderForm>
       </div>
-    </>
+    </div>
   )
 }
 

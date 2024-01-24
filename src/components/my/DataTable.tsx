@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui"
+import { Loading } from "./Loading"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -31,10 +32,11 @@ interface DataTableProps<TData, TValue> {
     [cellId:string]: string|undefined,
     headerRow?:string,
     bodyRow?:string,
-  }
+  },
+  loading?:boolean
 }
 
-export const DataTable = <TData, TValue>({ columns, data, filter, children, tableClass}: DataTableProps<TData, TValue>) => {
+export const DataTable = <TData, TValue>({ columns, data, filter, children, tableClass, loading}: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const table = useReactTable({
@@ -65,7 +67,6 @@ export const DataTable = <TData, TValue>({ columns, data, filter, children, tabl
     }
   }, [filter])
 
-
   return (
     <div className="rounded-md border">
       <div className="flex items-center px-3 py-4">
@@ -78,7 +79,7 @@ export const DataTable = <TData, TValue>({ columns, data, filter, children, tabl
             <TableRow key={headerGroup.id} className={tableClass?.headerRow ?? ""}>
               {headerGroup.headers.map((header:any) => {
                 return (
-                  <TableHead key={header.id} className={tableClass ? tableClass[header.id+'Head'] ??  "" : "" } >
+                  <TableHead key={header.id} className={tableClass ? tableClass[header.id+'Head'] ??  "py-2" : "py-2" } >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -92,30 +93,39 @@ export const DataTable = <TData, TValue>({ columns, data, filter, children, tabl
           )})}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className={tableClass?.bodyRow ?? ""}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className={"relative " + (tableClass ? tableClass[cell.id+'Cell'] ??  "" : "")}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {
+            !loading
+            ? table.getRowModel().rows?.length 
+              ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={tableClass?.bodyRow ?? ""}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className={"relative " + (tableClass ? tableClass[cell.id+'Cell'] ??  "" : "")}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) 
+              : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
                   </TableCell>
-                ))}
+                </TableRow>
+              )
+            : <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <Loading />
+                </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
+          }
         </TableBody>
       </Table>
     </div>
   )
 }
-

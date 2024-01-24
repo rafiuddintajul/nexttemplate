@@ -88,7 +88,22 @@
   h5 {
     @apply text-lg;
   }
+  ol > li {
+    @apply list-decimal list-inside;
+  }
+  ul > li {
+    @apply list-disc list-inside;
+  }
 }
+
+.textBold {
+  font-weight: bold;
+}
+
+.textItalic {
+  font-style: italic;
+}
+
 
 body {
   @apply flex flex-col h-screen
@@ -98,19 +113,44 @@ main {
   @apply flex-1 flex flex-col
 }
 
+/* react-slick adjustment start */
 
-/* responsive-carousel adjustment start */
-.carousel.carousel-slider, .slider-wrapper, .slider.animated {
+.slick-list, .slick-track, .slick-slack {
   @apply h-full;
+  overflow:visible!important;
+  height: 100%!important;
 }
 
-.control-arrow::before {
-  content: none!important;
+.slick-dots {
+  bottom: 4px!important;
+  user-select: none;
+  pointer-events: none;
 }
-/* responsive-carousel adjustment end */
+
+.slick-slider, div:has(> .slider-item){
+  @apply h-full
+}
+
+/* react-slick adjustment end */
 
 section {
-  @apply w-full flex relative;
+  padding: 0!important;
+  @apply w-full relative;
+}
+
+.placeholder {
+  /* base for all placeholder customly created to allow click through */
+  user-select: none;
+  pointer-events: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display:none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .info_div {
@@ -126,4 +166,8 @@ section {
   border-top:1px solid black;
   border-left:1px solid black;
   border-right:1px solid black;
+}
+
+.-top-64 {
+  top:-64px;
 }

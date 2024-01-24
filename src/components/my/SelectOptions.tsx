@@ -20,13 +20,16 @@ type SelectOptions = {
 export const SelectOptions = forwardRef(({ options, placeholder, value, onValueChange, disabled, className }:SelectOptions, ref:any) => {
   
   return (
-    <Select onValueChange={onValueChange} value={value ?? undefined} >
+    <Select onValueChange={onValueChange} value={value ?? undefined}>
       <SelectTrigger className={className} disabled={disabled}>
         <SelectValue placeholder={placeholder} ref={ref}/>
       </SelectTrigger>
-      <SelectContent ref={(ref)=>{ if(!ref) return; ref.ontouchstart = (e) =>{e.preventDefault()} }}> {/* this line to prevent certain device (touchevent) to propagate event */}
-        { options.map((option, index) =><div key={`name_${option}`} onClick={e=>e.stopPropagation()}><SelectItem  value={option}>{option}</SelectItem></div> )}
+      <SelectContent ref={(ref) => { if (!ref) return; ref.ontouchstart = (e) => { e.preventDefault(); }; }}>
+        { options.map((option, index) =><div key={`name_${option}`}><SelectItem value={option}>{option}</SelectItem></div> )}
       </SelectContent>
     </Select>
   )
 })
+
+SelectOptions.displayName = 'SelectOption' //work around for eslint error for forwardRef
+

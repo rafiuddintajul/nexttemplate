@@ -5,7 +5,7 @@ enum Action {
   ADDRESS='address',
   ACC='account',
   DATE='date',
-  DESC='desc',
+  DESC='description',
   ADDITEM='addItem',
   REMOVEITEM='removeItem',
   CHANGEITEM='changeItem',
@@ -32,9 +32,13 @@ type DescAct = {
   type: Action.DESC,
   payload: { desc: string }
 }
-type ItemAct = {
-  type: (Action.ADDITEM | Action.REMOVEITEM ),
+type AddItemAct = {
+  type: Action.ADDITEM,
   payload: { item: { product:Product } }
+}
+type RemItemAct = {
+  type: Action.REMOVEITEM,
+  payload: { id: string }
 }
 type QuantityAct = {
   type: Action.CHANGEITEM,
@@ -49,7 +53,7 @@ type ClearAct = {
   payload: undefined
 }
 
-type EditOrderAction = NameAct | AddressAct | AccAct | DateAct | DescAct | ItemAct | QuantityAct | StatusAct | ClearAct
+type EditOrderAction = NameAct | AddressAct | AccAct | DateAct | DescAct | AddItemAct | RemItemAct | QuantityAct | StatusAct | ClearAct
 
 function orderReducer(state: OrderFormFields, action: EditOrderAction):OrderFormFields {
   const { type, payload } = action
@@ -71,12 +75,12 @@ function orderReducer(state: OrderFormFields, action: EditOrderAction):OrderForm
       return { ...state, account: payload.account }
     case 'date':
       return { ...state, date: payload.date! }
-    case 'desc':
-      return { ...state, desc: payload.desc }
+    case 'description':
+      return { ...state, description: payload.desc }
     case 'addItem':
       return { ...state, items:[...state.items, { product:payload.item!.product, quantity:0 }]  }
     case 'removeItem':
-      const subtractedList = state.items.filter(item => item.product._id !== payload!.item?.product._id)
+      const subtractedList = state.items.filter(item => item.product._id !== payload!.id && item.product as any !== payload!.id)
       return { ...state, items: subtractedList, total:countTotal(subtractedList) }
     case 'changeItem':
       const quantityChangedList = state.items.map(item => {
@@ -87,7 +91,7 @@ function orderReducer(state: OrderFormFields, action: EditOrderAction):OrderForm
     case 'status':
       return { ...state, status: payload.status }
     case 'clear':
-      return { name: '', address: '', status:'new', account:undefined, items: [], date: undefined, desc: '', total: 0 }
+      return { name: '', address: '', status:'new', account:undefined, items: [], date: undefined, description: '', total: 0 }
     default:
       return state
   }

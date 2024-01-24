@@ -14,7 +14,7 @@ export const writeOffColumns: ColumnDef<WriteOff>[] = [
       return <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="min-w-min max-w-fit"
+        className="min-w-min max-w-fit px-0"
       >
         Date
         <ArrowUpDown className="ml-2 h-4 w-4" />

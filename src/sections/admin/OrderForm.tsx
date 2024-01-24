@@ -24,12 +24,12 @@ const prodFetcher = async () => {
 
 const options = Object.values(OrderStatus)
 
-const emptyOrder = { name: '', address: '', status:OrderStatus.NEW, account:undefined, items: [], date: undefined, desc: '', total: 0 } // default for empty form
+const emptyOrder = { name: '', address: '', status:OrderStatus.NEW, account:undefined, items: [], date: undefined, description: '', total: 0 } // default for empty form
 
 export const OrderForm = ({ submitHandler, children, orderData = emptyOrder, loading }: OrderFormProps) => {
   const [orderState, dispatch] = useReducer(orderReducer, orderData)
   const [product, setProduct] = useState<InputAutoCompOpt<Product>|undefined>(undefined)
-  const { name, address, account, items, date, desc, total, status } = orderState
+  const { name, address, account, items, date, description, total, status } = orderState
   const { toast } = useToast()
   
   const path =  usePathname().split('/')
@@ -78,10 +78,7 @@ export const OrderForm = ({ submitHandler, children, orderData = emptyOrder, loa
   }
   
   const remItemHandler = (id: string) => {
-    const remItem = prodOptions.find(prod => prod.value._id === id)
-    if (remItem) {
-      dispatch({ type: OrdAct.REMOVEITEM, payload: { item: { product: remItem.value } } })
-    }
+    dispatch({ type: OrdAct.REMOVEITEM, payload: { id } })
   }
   
   const quantityChangeHandler = (id: string, quantity: number) => {
@@ -119,7 +116,7 @@ export const OrderForm = ({ submitHandler, children, orderData = emptyOrder, loa
               </div>
           }
         </div>
-        {items.length > 0 && <ItemListQuantityInput list={items.map(item => ({ id:item.product._id!, name: item.product.name, price: item.product.price, quantity: item.quantity }))} remove={remItemHandler} quantityChange={quantityChangeHandler} className="py-1"/>}
+        {items.length > 0 && <ItemListQuantityInput list={items.map(item => ({ id:item.product._id! ?? item.product, name: item.product.name ?? 'undefined', price: item.product.price ?? 'undefined', quantity: item.quantity }))} remove={remItemHandler} quantityChange={quantityChangeHandler} className="py-1"/>}
       </div>
       <div className="flex gap-2">
         <div className="py-1 w-3/5 flex gap-2">
@@ -133,11 +130,11 @@ export const OrderForm = ({ submitHandler, children, orderData = emptyOrder, loa
       </div>
       <div className="py-1">
         <Label>Desc</Label>
-        <Textarea placeholder="Invoice descriptions" value={desc} onChange={descChangeHandler} />
+        <Textarea placeholder="Invoice descriptions" value={description} onChange={descChangeHandler} />
       </div>
       <div className="py-1">
         <Label>Status</Label>
-        <SelectOptions options={options} onValueChange={statusHandler} defaultValue={status} disabled={newOrder}/>
+        <SelectOptions options={options} onValueChange={statusHandler} defaultValue={status} disabled={newOrder} className="h-10 w-40"/>
       </div>
       <div className="flex justify-center gap-2 py-1">
         <Button type="submit" disabled={loading}>Submit</Button>

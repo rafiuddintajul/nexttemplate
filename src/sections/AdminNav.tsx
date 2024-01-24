@@ -11,16 +11,15 @@ export const AdminNav = ({ currentPath }: AdminNavProps) => {
   const router = useRouter()
 
   const style = (tab: string) => {
-    const defaultClass = "w-1/5 bg-white flex items-center justify-center border border-black rounded-t-lg text-sm -ml-px -mb-px hover:cursor-pointer"
+    const defaultClass = "w-1/4 bg-white flex items-center justify-center border border-black rounded-t-lg text-sm -ml-px -mb-px hover:cursor-pointer"
     if (tab === currentPath) return defaultClass + " border_b_white"
     return defaultClass
   }
   const tabs = [
     { name: 'Main', className: style('main') },
-    { name: 'Invoices', className: style('invoices') },
+    { name: 'Contents', className: style('contents') },
     { name: 'Orders', className: style('orders') },
-    { name: 'Products', className: style('products') },
-    { name: 'Writeoffs', className: style('writeoffs') }
+    { name: 'Products', className: style('products') }
   ]
 
   const handler = (tab: string) => {
@@ -32,13 +31,13 @@ export const AdminNav = ({ currentPath }: AdminNavProps) => {
 
   return (
     <div className="h-12 flex-none">
-      <div className="w-full h-full flex justify-center bg-blue-200 border-b border-black" >
+      <div className="w-full h-full flex justify-center border-b border-black" >
         <div className="hidden md:flex-1 bg-blue-500">
-          {/* this part only available on md */}
+           this part only available on md
         </div>
         <Tabs tabs={tabs} handler={handler} />
         <div className="hidden md:flex-1 bg-blue-500">
-          {/* this part only available on md */}
+          this part only available on md 
         </div>
       </div>
     </div>

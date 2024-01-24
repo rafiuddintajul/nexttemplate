@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from "react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import React, { useState } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 
 type PicCarouselProps = {
@@ -13,13 +13,15 @@ export const PicCarousel = ({ urls }:PicCarouselProps) => {
   const [reveal, setReveal] = useState(false)
   const display = reveal ? 'hidden' : 'block'
 
-  const leftHandler = () => {
+  const leftHandler = (e:React.MouseEvent) => {
+    e.stopPropagation()
     if (view > 0) {
       setView(index => index-1)
     }
   }
 
-  const rightHandler = () => {
+  const rightHandler = (e:React.MouseEvent) => {
+    e.stopPropagation()
     if (view < urls.length-1) {
       setView(index => index+1)
     }
@@ -35,7 +37,7 @@ export const PicCarousel = ({ urls }:PicCarouselProps) => {
   }
 
   const arrowDisable = (direction:string) => {
-    if ((direction === 'left' && view === 0)||(direction === 'right' && view === urls.length - 1)) return " opacity-20"
+    if ((direction === 'left' && view === 0)||(direction === 'right' && view === urls.length - 1)) return " opacity-40"
     return "opacity-100"
   }
 
@@ -52,7 +54,8 @@ export const PicCarousel = ({ urls }:PicCarouselProps) => {
         </div>)
       })}
       <div className="absolute inset-x-0 bottom-0 flex justify-center">
-        <ArrowLeft className={`m-2 hover:cursor-pointer text-blue-400 ${arrowDisable('left')}`} size={20} onClick={leftHandler}/><ArrowRight className={`m-2 hover:cursor-pointer text-blue-400 ${arrowDisable('left')}`} size={20} onClick={rightHandler}/>
+        <ChevronLeft className={`m-2 hover:cursor-pointer text-black-600 ${arrowDisable('left')}`} size={20} onClick={leftHandler}/>
+        <ChevronRight className={`m-2 hover:cursor-pointer text-black-600 ${arrowDisable('right')}`} size={20} onClick={rightHandler}/>
       </div>
     </div>
   )

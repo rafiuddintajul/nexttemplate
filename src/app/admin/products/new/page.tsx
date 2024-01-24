@@ -13,7 +13,7 @@ const Page = () => {
 
   const submitHandler = async (e: React.FormEvent, product: Product, callback: () => void) => {
     e.preventDefault()
-    const { name, images, price, type } = product
+    const { name, images, price, tags } = product
     let toastObj: Toast = { description: '' } //default toast input
     let emptyFields = []
 
@@ -23,7 +23,6 @@ const Page = () => {
     if (name === '') emptyFields.push('Name')
     if (images.length === 0) emptyFields.push('Images')
     if (price === 0) emptyFields.push('Price')
-    if (type === '') emptyFields.push('Type')
 
     if (emptyFields.length === 0) {
       // submit product here
@@ -35,7 +34,6 @@ const Page = () => {
       if (res.ok) {
         // on success
         toastObj = { description: <div>New product has been created</div>, className: "bg-green-300" }
-        setLoading(false)
         callback()
       } else {
         // on failure
@@ -50,7 +48,7 @@ const Page = () => {
         }
       }
     } else {
-      //on empty field 
+      // on empty field 
       toastObj = {
         description: (<div>
           <p>Following field&#40;s&#41; is/are required:</p>
@@ -62,24 +60,24 @@ const Page = () => {
         </div>),
         className: "bg-amber-300"
       }
-      setLoading(false)
     }
 
+    setLoading(false)
     const submissionToast = toast(toastObj)
     return setTimeout(() => submissionToast.dismiss(), 3000)
   }
 
   return (
-    <>
+    <div className="flex container justify-center">
       <div className="flex-col max-w-2xl h-full w-full">
         <div className="pt-5 pb-2 w-full pl-3">
-          <h3>Product: Create New </h3>
+          <h3>Create New </h3>
         </div>
         <ProductForm submitHandler={submitHandler} loading={loading}>
           <Button type="button" onClick={() => router.back()}>Back</Button>
         </ProductForm>
       </div>
-    </>
+    </div>
   )
 }
 

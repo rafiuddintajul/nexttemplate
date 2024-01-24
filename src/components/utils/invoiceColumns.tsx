@@ -38,7 +38,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     accessorKey: 'items',
     cell: ({ row }) => {
       const items: { [key: string]: any, product: Product, quantity: number }[] = row.getValue('items')
-      const itemsName = items.map(item => item.product.name)
+      const itemsName = items.map(item => item.product?.name ?? 'Undefined')
       return <>
         <Popover>
           <PopoverTrigger className="hover:cursor-default"><div className="text-start line-clamp-2">{itemsName.join(', ')}</div></PopoverTrigger>

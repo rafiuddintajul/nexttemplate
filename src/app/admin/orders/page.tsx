@@ -10,8 +10,17 @@ import { DataTable } from '@/components/my'
 import { Plus } from 'lucide-react'
 
 const Page = () => {
+  const [loading, setLoading] = useState(true)
   const [select, setSelect] = useState({ column: 'status', value: 'all' })
-  const [orders, setOrders] = useState<Order[]>()
+  const [orders, setOrders] = useState<Order[]>([{
+    name: '',
+    address: '',
+    items: [ ],
+    date: new Date(),
+    total: 0,
+    status: '',
+    description: ''
+  }])
   const router = useRouter()
   const status = ['all', 'new', 'shipping', 'shipped']
 
@@ -20,6 +29,7 @@ const Page = () => {
       try {
         const res = await fetch('http://localhost:3000/api/orders/')
         const data = await res.json()
+        setLoading(false)
         setOrders(data)
       } catch (error) {
         console.log(error)
@@ -29,22 +39,21 @@ const Page = () => {
   }, [])
 
   return (
-    <>
-      <div className="pt-5 pb-2 flex w-full pl-3 gap-2">
-        <h3>Orders</h3>
-        <div className="bg-black flex items-center rounded-full w-8 hover:cursor-pointer" onClick={()=>router.push('/admin/orders/new')}>
-          <Plus className="text-white mx-auto" size={18} strokeWidth={3}/>
+    <div className="pt-5 pb-2 flex w-full pl-3 gap-2 justify-center">
+      <div className="flex flex-col">
+        <div className="container">
+          <p className="text-sm mt-5 text-center">Manage orders received. Orders are automatically registered on user&apos;s purchase, but to add manually click on the big plus button above</p>
+          <div className="flex-col overflow-hidden max-w-4xl self-center container">
+            <DataTable columns={orderColumns} data={orders} filter={select} loading={loading} >
+              <SelectOptions options={status} placeholder="filter status" onValueChange={(value: string) => setSelect(select => ({ ...select, value }))} className="py-2 max-w-md" />
+            </DataTable>
+          </div>
+          <div className="bg-black flex items-center rounded-full w-10 hover:cursor-pointer absolute top-1 right-1 h-10" onClick={()=>router.push('/admin/orders/new')}>
+            <Plus className="text-white mx-auto" size={18} strokeWidth={3}/>
+          </div>
         </div>
       </div>
-      {orders
-        ? <div className="w-full flex-col overflow-hidden">
-          <DataTable columns={orderColumns} data={orders} filter={select} >
-            <SelectOptions options={status} placeholder="filter status" onValueChange={(value: string) => setSelect(select => ({ ...select, value }))} />
-          </DataTable>
-        </div>
-        : <div>Loading</div>
-      }
-    </>
+    </div>
   )
 }
 

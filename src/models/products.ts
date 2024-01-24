@@ -10,23 +10,25 @@ const ProdSchema = new Schema({
     required: [true, 'Product image is required at least 1 image']
   },
   price: {
-    type: Schema.Types.ObjectId,
-    ref:'PriceRecord'
-  },
-  desc: {
-    type: String,
-    required: [true, 'Product description is required'],
-  },
-  type: {
-    type: String,
-    default: 'product',
+    type: Number,
+    ref:'PriceRecord',
+    required: [true, 'Product Price is required']
   },
   tags: {
     type: Array,
+    default: ['general']
+  },
+  stock: {
+    type:Number,
+    default:0,
   },
   availability: {
     type: Boolean,
     required: [true, 'Product availability is required'],
+  },
+  description: {
+    type: String,
+    required: [true, 'Product description is required'],
   }
 },{
   timestamps:true

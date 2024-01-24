@@ -5,11 +5,11 @@ enum Action {
   ADDIMGS='addimgs',
   REMIMGS='remimgs',
   PRICE='price',
-  TYPE='type',
   ADDTAGS='addtags',
   REMTAGS='remtags',
-  DESC='desc',
+  STOCK='stock',
   AVAILABLE='available',
+  DESC='desc',
   CLEAR='clear',
 }
 
@@ -23,19 +23,19 @@ type ImagesAct = {
 }
 type PriceAct = {
   type: Action.PRICE,
-  payload: { price: number }
-}
-type TypeAct = {
-  type: Action.TYPE,
-  payload: { type: string }
+  payload: { price: string }
 }
 type TagsAct = {
   type: Action.ADDTAGS|Action.REMTAGS,
   payload: { tag: string }
 }
+type StockAct = {
+  type: Action.STOCK,
+  payload: { stock: number }
+}
 type DescAct = {
   type: Action.DESC,
-  payload: { desc: string }
+  payload: { description: string }
 }
 type AvailableAct = {
   type: Action.AVAILABLE,
@@ -46,11 +46,13 @@ type ClearAct = {
   payload?: any
 }
 
-type EditProductsAction = NameAct | ImagesAct | PriceAct | TypeAct | TagsAct | DescAct | AvailableAct | ClearAct
+type EditProductsAction = NameAct | ImagesAct | PriceAct | TagsAct | StockAct | AvailableAct | DescAct | ClearAct
 
-const emptyProd = { name:'', images:[], price:0, desc: '', type:'', tags:[], availability:false }
+ type ProdReducer = Omit<Product, 'price'> & { price: string }
 
-function ProductReducer(state: Product, action: EditProductsAction):Product {
+const emptyProd = { name:'', images:[], price:'0', tags:[], stock:0, availability:false, description: '', }
+
+function ProductReducer(state: ProdReducer, action: EditProductsAction):ProdReducer {
   const { type, payload } = action
   
   switch (type) {
@@ -62,18 +64,18 @@ function ProductReducer(state: Product, action: EditProductsAction):Product {
       const images = state.images.filter(image => image !== payload.image)
       return { ...state, images }
     case 'price':
-      return { ...state, price: payload.price  }
-    case 'type':
-      return { ...state, type: payload.type }
+      return { ...state, price:payload.price }
     case 'addtags':
       return { ...state, tags: [...state.tags, payload.tag ] }
     case 'remtags':
       const filteredTags = state.tags.filter(tag => tag !== payload.tag)
       return { ...state, tags: filteredTags }
-    case 'desc':
-      return { ...state, desc: payload.desc }
+    case 'stock':
+      return { ...state, stock: payload.stock }
     case 'available':
       return { ...state, availability: payload.availability }
+    case 'desc':
+      return { ...state, description: payload.description }
     case 'clear':
       return emptyProd
     default:
@@ -82,4 +84,4 @@ function ProductReducer(state: Product, action: EditProductsAction):Product {
 }
 
 
-export { ProductReducer, Action, emptyProd }
+export { ProductReducer, Action, emptyProd, type ProdReducer }

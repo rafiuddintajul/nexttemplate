@@ -25,15 +25,14 @@ const Page = ({ params }: { params: { id: string } }) => {
     e.preventDefault()
     setLoading(true)
 
-    const { name, images, type, tags } = product
+    const { name, images, description } = product
     let toastObj: Toast = { description: '' } //default toast input
     let emptyFields = []
 
     // validate for empty fields
     if (name === '') emptyFields.push('Name')
     if (images.length === 0) emptyFields.push('Image')
-    if (type === '') emptyFields.push('Type')
-    if (tags.length === 0) emptyFields.push('Tags')
+    if (description === '') emptyFields.push('Description')
 
     if (emptyFields.length === 0) {
       // submit order here
@@ -46,7 +45,6 @@ const Page = ({ params }: { params: { id: string } }) => {
         // on success
         toastObj = { description: <div>Product <b>{params.id}</b> has been saved</div>, className: "bg-green-300" }
         setEdit(false)
-        setLoading(false)
         // reavalidate order
         mutate(await res.json())
       } else {
@@ -77,6 +75,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       }
     }
 
+    setLoading(false)
     const submissionToast = toast(toastObj)
     return setTimeout(() => submissionToast.dismiss(), 3000)
   }
@@ -154,14 +153,14 @@ const Page = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <>
+    <div className="flex container justify-center">
       <div className="flex-col max-w-2xl w-full p-2">
         <div className="flex-none pt-5 pb-2 w-full">
-          <h3>Product: {data ? data?.name : <span className="animate-pulse">Loading Product...</span>}</h3>
+          <h3 className="text-center">{data ? data?.name : <span className="animate-pulse">Loading Product...</span>}</h3>
         </div>
         {content()}
       </div>
-    </>
+    </div>
   )
 }
 

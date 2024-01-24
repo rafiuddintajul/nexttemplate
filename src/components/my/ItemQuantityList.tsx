@@ -24,7 +24,6 @@ export const ItemListQuantityInput = forwardRef(({ list, remove, quantityChange,
       quantityChange(id, quantity)
     }
   }
-
   return (
     <div className={`flex-col ${props.className}`} ref={ref}>
       <div className="flex justify-between px-2 pb-1 pt-2 border-b">

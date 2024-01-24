@@ -52,3 +52,5 @@ export const DateInput = forwardRef(({ date, addDate, ...props }:DateInputProps,
     </Popover>
   )
 })
+
+DateInput.displayName = 'DateInput'
