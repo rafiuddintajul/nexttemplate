@@ -28,7 +28,7 @@ const Page = () => {
 
     if (emptyFields.length === 0) {
       // submit invoice here
-      const res = await fetch(`${window.location.origin}/api/orders`, {
+      const res = await fetch(`/api/orders`, {
         method: 'POST',
         body: JSON.stringify(order)
       })

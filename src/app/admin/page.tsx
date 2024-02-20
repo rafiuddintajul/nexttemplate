@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react"
 
 async function getConfigs(){
-  const res = await fetch(`${process.env.DEV_URL}/api/configs/AdminMainConfig`,
+  const res = await fetch(`${process.env.URL}/api/configs/AdminMainConfig`,
     {
       cache: "no-cache"
     })

@@ -4,11 +4,11 @@ import { Welcome, Info, Catalogue, Footer } from '@/sections'
 export default async function Home() {
   const session = await getServerSession()
   return (
-    <main className="w-full flex-center flex-col">
+    <main className="w-full flex flex-center flex-col">
       <Welcome />
-      <Info />
+      {/* <Info />
       <Catalogue />
-      <Footer />
+      <Footer /> */}
     </main>
   )
 }

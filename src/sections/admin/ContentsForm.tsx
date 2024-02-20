@@ -20,7 +20,7 @@ export const ContentsForm = () => {
   const addSectionContent = async () => {
     setLoading(true)
     // add sectionContent and deploy to db to create section Content id
-    const res = await fetch(`${window.location.origin}/api/sections`, { method:'POST', body:JSON.stringify({ contents:[] }) })
+    const res = await fetch(`/api/sections`, { method:'POST', body:JSON.stringify({ contents:[] }) })
     if (res.ok) {
       if (data) {
         mutate([...data, await res.json()])
@@ -32,7 +32,7 @@ export const ContentsForm = () => {
   const removeSection = async (id:string) =>{
     setLoading(true)
     // remove sectionContent and deploy to db
-    const res = await fetch(`${window.location.origin}/api/sections/${id}`, { method:'DELETE' })
+    const res = await fetch(`/api/sections/${id}`, { method:'DELETE' })
     if (res.ok) {
       if(data){
         mutate(data.filter(content=> content._id !== id ))
@@ -52,7 +52,7 @@ export const ContentsForm = () => {
       }
     }
     // remove sectionContent and deploy to db
-    const res = await fetch(`${window.location.origin}/api/sections/${id}`, { method:'PATCH', body: JSON.stringify(newSlide) })
+    const res = await fetch(`/api/sections/${id}`, { method:'PATCH', body: JSON.stringify(newSlide) })
     if (res.ok) {
       if(data){
         mutate(data.filter(content=> content._id !== id ))
@@ -63,7 +63,7 @@ export const ContentsForm = () => {
 
   const removeSlide = async (sectionId:string, slideId:string) => {
     setLoading(true)
-    const res = await fetch(`${window.location.origin}/api/contents/${slideId}`, { method:'DELETE', body: JSON.stringify({ sectionId }) })
+    const res = await fetch(`/api/contents/${slideId}`, { method:'DELETE', body: JSON.stringify({ sectionId }) })
     if (res.ok) {
       if(data){
         mutate(data.map(content=> {

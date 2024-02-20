@@ -26,7 +26,7 @@ const Page = () => {
 
     if (emptyFields.length === 0) {
       // submit product here
-      const res = await fetch(`${window.location.origin}/api/products`, {
+      const res = await fetch(`/api/products`, {
         method: 'POST',
         body: JSON.stringify(product)
       })

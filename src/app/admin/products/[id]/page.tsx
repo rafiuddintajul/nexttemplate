@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 
 const productFetcher = async (url: string) => {
-  const res = await fetch(`${window.location.origin}${url}`)
+  const res = await fetch(`${url}`)
   const data = await res.json()
   return data
 }

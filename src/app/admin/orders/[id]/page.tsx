@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import useSWR from 'swr'
 
 const orderFetcher = async (url: string) => {
-  const res = await fetch(`${window.location.origin}${url}`)
+  const res = await fetch(`${url}`)
   const data = await res.json()
   return data
 }
@@ -40,7 +40,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     if (emptyFields.length === 0) {
 
       // submit order here
-      const res = await fetch(`${window.location.origin}/api/orders/${params.id}`, {
+      const res = await fetch(`/api/orders/${params.id}`, {
         method: 'PATCH',
         body: JSON.stringify(order)
       })

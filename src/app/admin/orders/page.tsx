@@ -27,7 +27,7 @@ const Page = () => {
   useEffect(() => {
     async function getOrders() {
       try {
-        const res = await fetch('http://localhost:3000/api/orders/')
+        const res = await fetch('/api/orders/')
         const data = await res.json()
         setLoading(false)
         setOrders(data)

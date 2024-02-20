@@ -16,7 +16,7 @@ const Products = () => {
   useEffect(() => {
     // PRODUCT query all
     async function getProducts() {
-      const res = await fetch(`${window.location.origin}/api/products`)
+      const res = await fetch('/api/products')
       if (res.ok) {
         const data = await res.json()
         setProducts(data)
@@ -59,7 +59,14 @@ const Products = () => {
   return (
     <div className="flex flex-col">
       <div className="container">
-        <p className="text-sm mt-5 text-center">Manage products. To add new product click on the big plus button above</p>
+        <div className="w-full flex justify-center gap-2">
+          <div className="relative max-w-4xl flex justify-center">
+            <p className="text-sm mt-5 text-center w-[896px]">Manage products. To add new product click on the big plus button above</p>
+            <div className="absolute h-full right-3 top-0">
+              <SelectOptions options={['All','Available','Unavailable']} className="h-9 w-32" value={selectValue} onValueChange={filterHandler} />
+            </div>
+          </div>
+        </div>
         <div className="flex justify-center">
           <div className="flex-col overflow-hidden w-full max-w-4xl">
             {
@@ -73,6 +80,7 @@ const Products = () => {
       <div className="bg-black flex items-center rounded-full w-10 hover:cursor-pointer absolute top-1 right-1 h-10" onClick={()=>router.push('/admin/products/new')}>
         <Plus className="text-white mx-auto" size={18} strokeWidth={3}/>
       </div>
+
     </div>
   )
 }

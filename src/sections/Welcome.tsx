@@ -1,19 +1,64 @@
-export const Welcome = () => {
+import Image from "next/image"
+import { SlidingSection } from "./SlidingSection"
+import { TextEditor } from "@/components/my"
+
+async function getContents(){
+  const data = await fetch(`${process.env.URL}/api/contents`)
+  const contents = await data.json()
+  return contents
+}
+
+export const Welcome = async () => {
+  const contents = await getContents()
+  
   return (
-    <section className="h-screen" style={{
-      backgroundImage: "url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')",
-      backgroundSize: "cover",
-      backgroundPosition: "center center",
-      opacity: 0.9,
-    }}>
-      <div className="flex items-center h-screen">
-        <div className="flex-col px-2">
-          <h1 className="text-slate-100 mb-4 font-bold text_shadow text-left fade_in">Lorem ipsum dolor sit amet.</h1>
-          <p className=" text-slate-100 text_shadow text-right fade_in">Nullam consectetur nibh sed efficitur auctor. Proin maximus id diam vitae ultrices. Nulla id nisi scelerisque, tempus eros eget, rhoncus.</p>
-        </div>
-      </div>
-      <p className="absolute bottom-0 p-3 text-white text-xs opacity-10">Photo by <a href="https://unsplash.com/@nate_dumlao?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Nathan Dumlao</a> on <a href="https://unsplash.com/photos/6VhPY27jdps?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-   </p>
+    <section>
+      {
+        (await contents).map((section:any) => {
+          return <SlidingSection key={section._id}>
+            {section.contents.map((slide:any)=>{
+              return <div key={slide._id} className="flex flex-col justify-center h-[860px] gap-1 relative md:flex-row bg-gray-300">
+                <Image 
+                  src={slide.bgPic?.url}
+                  alt="mountain"
+                  fill
+                  className="object-cover object-center w-full h-full z-0"
+                />
+                <div className="flex flex-col justify-center py-5 px-1 h-full w-full md:container md:flex-row">
+                  {
+                    slide.contents.map((content:any, i:number) => {
+                      if (content.type === 'article') {
+                        if (content.article) {
+                          return (
+                            <div key={i} className="relative flex self-center w-full z-10 max-h-[360px] max-w-xl px-3 group/text">
+                              <div className="w-full flex flex-col h-[360px] justify-center">
+                                <TextEditor namespace={`article_${i}`} state={content.article} editable={false} />
+                              </div>
+                            </div>
+                          )
+                        }
+                      } else {
+                        if (content.url) {
+                          return (
+                            <div key={i} className="self-center relative w-[300px] h-[250px] max-w-xl md:w-full md:h-[360px]">
+                              <Image
+                                src={content.url} 
+                                alt="hiker"
+                                fill
+                                className="object-cover"
+                              />
+                            </div>)
+                        }
+                      }
+                    })
+                  }
+                </div>
+              </div>
+            })}
+          </SlidingSection>
+        })
+      }
+      
     </section>
   )
 }
