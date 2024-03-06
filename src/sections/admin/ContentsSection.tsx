@@ -8,7 +8,7 @@ import { WarningAlert } from "@/components/my"
 import { ContentForm } from "./ContentForm"
 import { useState } from "react"
 import { Plus, Minus } from "lucide-react"
-import { TextEditor } from "@/components/my"
+import { TextEditor } from "@/components/texteditor"
 
 type ContentsSectionType = {
   data: SectionContents,
